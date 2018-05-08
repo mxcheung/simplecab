@@ -17,32 +17,32 @@ This module intentions is to:
 
 ### Run MYSQL Database###
 1.  Run mysql database
-		mysqld.exe
+ * mysqld.exe
 		
 		
 ### Run Simple Cab Server and load csv data ###
 2.  Run Simple Cab Server
-        java -jar simplecabserver.jar
-        curl -X GET "http://localhost:8080/cab/loadCSV?filepath=E%3A%2FTEMP2%2Fcabdata2.csv" -H "accept: */*"
+  * java -jar simplecabserver.jar
+  * curl -X GET "http://localhost:8080/cab/loadCSV?filepath=E%3A%2FTEMP2%2Fcabdata2.csv" -H "accept: */*"
 
 
 ### Run Simple Cab Client ###
 3.  Run Simple Cab Client
         java -jar simplecabclient.jar -h       <== display help
 	
-	usage: Main
-	 -d,--deleteCache           Delete cache.
-	 -f,--inputFileName <arg>   inputFileName with ids.
-	 -h,--help                  show help.
-	 -i,--ignoreCache           Ignore cache.
-	 -m,--medallionIds <arg>    medallion ids.
-	 -p,--pickupDate <arg>      Pickup Date yyyy-MM-dd.
+usage: Main
+ -d,--deleteCache           Delete cache.
+ -f,--inputFileName <arg>   inputFileName with ids.
+ -h,--help                  show help.
+ -i,--ignoreCache           Ignore cache.
+ -m,--medallionIds <arg>    medallion ids.
+ -p,--pickupDate <arg>      Pickup Date yyyy-MM-dd.
 	 
  
-java  -jar simplecabclient.jar -h
-java  -jar simplecabclient.jar -d
-java  -jar simplecabclient.jar -i -p 2013-12-01 -m D7D598CD99978BD012A87A76A7C891B7  5455D5FF2BD94D10B304A15D4B7F2735
-java  -jar simplecabclient.jar -p 2013-12-01 -f input.txt
+* java  -jar simplecabclient.jar -h
+* java  -jar simplecabclient.jar -d
+* java  -jar simplecabclient.jar -i -p 2013-12-01 -m D7D598CD99978BD012A87A76A7C891B7  5455D5FF2BD94D10B304A15D4B7F2735
+* java  -jar simplecabclient.jar -p 2013-12-01 -f input.txt
 
 ### Continous Integration and Code Coverage 
 - [Continous Integration](https://travis-ci.org/mxcheung/microservice?branch=master)
