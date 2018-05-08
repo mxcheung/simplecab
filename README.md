@@ -12,9 +12,11 @@ This module intentions is to:
 How to run the program
 ================
 
-### Run MYSQL Database ###
+### Run MYSQL Database and initialise ###
 1.  Run mysql database
  * mysqld.exe
+ * Running: mysql.exe  --protocol=tcp --host=127.0.0.1 --user=root --port=3306 --default-character-set=utf8 --comments  < "ny_cab_data_cab_trip_data_full.sql"
+ 
 		
 		
 ### Run Simple Cab Server and load csv data ###
