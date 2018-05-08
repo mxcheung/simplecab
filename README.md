@@ -33,10 +33,15 @@ How to run the program
 	
 usage: Main
  -d,--deleteCache           Delete cache.
+ 
  -f,--inputFileName <arg>   inputFileName with ids.
+ 
  -h,--help                  show help.
+ 
  -i,--ignoreCache           Ignore cache.
+ 
  -m,--medallionIds <arg>    medallion ids.
+ 
  -p,--pickupDate <arg>      Pickup Date yyyy-MM-dd.
 	 
  
