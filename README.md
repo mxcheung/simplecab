@@ -1,4 +1,4 @@
-# simplecab
+# Simplecab
 
 
 
@@ -13,9 +13,10 @@ This module intentions is to:
    - Cab Data Researcher is a company that provides insights on the open data about NY cab trips
    - Service to process query cab trips from csv.
 
-### How to run the program ###
+How to run the program
+================
 
-### Run MYSQL Database###
+### Run MYSQL Database ###
 1.  Run mysql database
  * mysqld.exe
 		
