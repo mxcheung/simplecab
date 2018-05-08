@@ -16,18 +16,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CommandExecutor {
     private static final Logger LOGGER = LoggerFactory.getLogger(CommandExecutor.class);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    private SimpleCabService simpleCabService;
+    private final SimpleCabService simpleCabService;
     private ObjectMapper mapper = getObjectMapper();
 
-    public CommandExecutor(SimpleCabService simpleCabService ) {
+    public CommandExecutor(SimpleCabService simpleCabService) {
         this.simpleCabService = simpleCabService;
     }
 
     public void execute(CommandParams params) throws JsonProcessingException {
         String paramStr = this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(params);
         LOGGER.info("\nInput: {}", paramStr);
-
         if (params.getDeleteCache()) {
             LOGGER.info("Deleting cache ...");
             deleteCache();
@@ -37,16 +37,13 @@ public class CommandExecutor {
             Map<String, Integer> result = getMedallionSummary(params);
             printResult(params, result);
         }
-
     }
 
     private Map<String, Integer> getMedallionSummary(CommandParams params) throws JsonProcessingException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Objects.requireNonNull(params.getPickupDate(), "Pick up date is required");
         LocalDate pickupDate = LocalDate.parse(params.getPickupDate(), formatter);
         return simpleCabService.getMedallionsSummary(java.sql.Date.valueOf(pickupDate), params.getIgnoreCache(),
                 params.getMedallionIds());
-
     }
 
     private void printResult(CommandParams params, Map<String, Integer> result) throws JsonProcessingException {
@@ -67,7 +64,7 @@ public class CommandExecutor {
         simpleCabService.deleteCache();
     }
 
-    protected ObjectMapper getObjectMapper() {
+    private ObjectMapper getObjectMapper() {
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         return mapper;
