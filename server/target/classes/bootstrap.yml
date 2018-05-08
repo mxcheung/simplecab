@@ -1,8 +1,0 @@
-spring:
-  application:
-    name: lonsec-dp-company-service
-  cloud:
-    config:
-      enabled: true
-      uri: ${lonsec.infrastructure.config.uri:http://localhost:10000}
-

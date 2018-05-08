@@ -1,7 +1,0 @@
-GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
-NYC Simple Cab - Client,com.datarepublic.simplecab.command,SimpleCabServiceImpl.new ParameterizedTypeReference() {...},0,6,0,0,0,1,0,1,0,1
-NYC Simple Cab - Client,com.datarepublic.simplecab.command,CommandParams,0,46,0,0,0,18,0,11,0,11
-NYC Simple Cab - Client,com.datarepublic.simplecab.command,SimpleCabServiceImpl,0,154,0,2,0,29,0,7,0,6
-NYC Simple Cab - Client,com.datarepublic.simplecab.command,CommandExecutor,0,166,0,6,0,37,0,10,0,7
-NYC Simple Cab - Client,com.datarepublic.simplecab,Client,0,28,0,0,0,7,0,3,0,3
-NYC Simple Cab - Client,com.datarepublic.simplecab.cli,Cli,36,159,0,12,10,38,1,12,1,6
