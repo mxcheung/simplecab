@@ -31,7 +31,8 @@ How to run the program
 3.  Run Simple Cab Client
         java -jar simplecabclient.jar -h       <== display help
 	
-usage: Main
+* usage: Main
+
  -d,--deleteCache           Delete cache.
  
  -f,--inputFileName <arg>   inputFileName with ids.
