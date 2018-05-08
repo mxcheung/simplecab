@@ -12,6 +12,55 @@
 		<version>1.0-SNAPSHOT</version>
 	</parent>
 
+	<properties>
+		<revision>1.0.0</revision>
+		<changelist>-SNAPSHOT</changelist>
+
+		<!-- Default Profile and Test Execution Properties. Dev profile executing 
+			only unit tests. -->
+		<build.profile.id>dev</build.profile.id>
+		<skip.integration.tests>true</skip.integration.tests>
+		<skip.unit.tests>false</skip.unit.tests>
+
+		<!-- Code coverage properties -->
+		<coverage.line.ratio>0.20</coverage.line.ratio>
+		<coverage.branch.ratio>0.20</coverage.branch.ratio>
+		<coverage.complexity.ratio>0.20</coverage.complexity.ratio>
+
+		<!-- Java Version source/target -->
+		<jdk.source.version>1.8</jdk.source.version>
+		<jdk.target.version>1.8</jdk.target.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Maven plugin versions -->
+		<plugin.maven.compiler>3.7.0</plugin.maven.compiler>
+		<plugin.maven.resources>3.0.2</plugin.maven.resources>
+		<plugin.maven.surefire>2.21.0</plugin.maven.surefire>
+		<plugin.maven.failsafe>2.21.0</plugin.maven.failsafe>
+		<plugin.maven.jar>3.0.2</plugin.maven.jar>
+		<plugin.maven.war>3.2.0</plugin.maven.war>
+		<plugin.springframework.boot>1.5.10.RELEASE</plugin.springframework.boot>
+		<plugin.build.helper>3.0.0</plugin.build.helper>
+		<plugin.jacoco>0.8.0</plugin.jacoco>
+		<plugin.maven.checkstyle>3.0.0</plugin.maven.checkstyle>
+		<plugin.puppycrawl.checkstyle>8.8</plugin.puppycrawl.checkstyle>
+		<!-- Jacoco Properties -->
+		<jacoco.execution.data.file>${project.build.directory}/jacoco.exec</jacoco.execution.data.file>
+
+		<!-- Dependency Library Versions -->
+		<lonsec-starters-version>1.0.0</lonsec-starters-version>
+
+		<apache.commons.lang3.version>3.7</apache.commons.lang3.version>
+		<commons-collections4.version>4.1</commons-collections4.version>
+		<!-- Test Dependency Library Versions -->
+		<junit-version>4.12</junit-version>
+
+		<mssql.jdbc.version>6.2.1.jre8</mssql.jdbc.version>
+		<jackson-dataformat-csv.version>2.8.8</jackson-dataformat-csv.version>
+		<dozer.version>5.5.1</dozer.version>
+		<swagger2.version>2.8.0</swagger2.version>
+	</properties>
 
 	<build>
 		<plugins>
@@ -257,12 +306,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
 			<version>${swagger2.version}</version>
@@ -315,13 +358,6 @@
 		<!-- <dependency> <groupId>com.microsoft.sqlserver</groupId> <artifactId>mssql-jdbc</artifactId> 
 			<version>${mssql.jdbc.version}</version> </dependency> -->
 
-		<!-- For MySQL -->
-		<dependency>
-			<groupId>mysql</groupId>
-			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.40</version>
-		</dependency>
-
 
 		<!-- Runtime Dependencies -->
 		<dependency>
@@ -352,4 +388,5 @@
 
 	</dependencies>
 
+	<groupId>com.datarepublic</groupId>
 </project>
