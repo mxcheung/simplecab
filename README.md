@@ -1,17 +1,13 @@
 # Simplecab
 
-
-
-java -jar server-1.0-SNAPSHOT.jar -Dspring.profiles.active=local-mysql
-
 [![travis](https://travis-ci.org/mxcheung/simplecab.svg?branch=master)](https://travis-ci.org/mxcheung/simplecab?branch=master)
 [![codecov](https://codecov.io/gh/mxcheung/microservice/branch/master/graph/badge.svg)](https://codecov.io/gh/mxcheung/microservice)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f4d27930885946fd9fbd34ee8e42e449)](https://www.codacy.com/app/mxcheung/microservice?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mxcheung/microservice&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f4d27930885946fd9fbd34ee8e42e449)](https://www.codacy.com/app/mxcheung/microservice?utm_source=github.com&utm_medium=referral&utm_content=mxcheung/microservice&utm_campaign=Badge_Coverage)
 
 This module intentions is to:  
-   - Cab Data Researcher is a company that provides insights on the open data about NY cab trips
-   - Service to process query cab trips from csv.
+   * Cab Data Researcher is a company that provides insights on the open data about NY cab trips
+   * Service to process query cab trips from csv.
 
 How to run the program
 ================
