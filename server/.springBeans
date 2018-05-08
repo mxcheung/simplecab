@@ -7,7 +7,7 @@
 	</configSuffixes>
 	<enableImports><![CDATA[false]]></enableImports>
 	<configs>
-		<config>java:com.datarepublic.simplecab.server.Server</config>
+		<config>java:com.data.simplecab.Server</config>
 	</configs>
 	<autoconfigs>
 	</autoconfigs>

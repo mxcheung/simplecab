@@ -4,84 +4,50 @@
 
 java -jar server-1.0-SNAPSHOT.jar -Dspring.profiles.active=local-mysql
 
-
-====================================
-## Lookup Service
- 
-[![travis](https://travis-ci.org/mxcheung/microservice.svg?branch=master)](https://travis-ci.org/mxcheung/microservice?branch=master)
+[![travis](https://travis-ci.org/mxcheung/simplecab.svg?branch=master)](https://travis-ci.org/mxcheung/simplecab?branch=master)
 [![codecov](https://codecov.io/gh/mxcheung/microservice/branch/master/graph/badge.svg)](https://codecov.io/gh/mxcheung/microservice)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/f4d27930885946fd9fbd34ee8e42e449)](https://www.codacy.com/app/mxcheung/microservice?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mxcheung/microservice&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/f4d27930885946fd9fbd34ee8e42e449)](https://www.codacy.com/app/mxcheung/microservice?utm_source=github.com&utm_medium=referral&utm_content=mxcheung/microservice&utm_campaign=Badge_Coverage)
 
 This module intentions is to:  
-   - read fixed length transaction files.
-   - product a daily summary report.
+   - Cab Data Researcher is a company that provides insights on the open data about NY cab trips
+   - Service to process query cab trips from csv.
 
 ### How to run the program ###
-java -jar fileingestor.jar datafile.txt out.csv
+
+### Run MYSQL Database###
+1.  Run mysql database
+		mysqld.exe
+		
+		
+### Run Simple Cab Server and load csv data ###
+2.  Run Simple Cab Server
+        java -jar simplecabserver.jar
+        curl -X GET "http://localhost:8080/cab/loadCSV?filepath=E%3A%2FTEMP2%2Fcabdata2.csv" -H "accept: */*"
 
 
-### How to load cab data from csv file###
-curl -X GET "http://localhost:8080/cab/loadCSV?filepath=E%3A%2FTEMP2%2Fcabdata2.csv" -H "accept: */*"
-
-- http://localhost:8080/cab/loadCSV?filepath=E%3A%2FTEMP2%2Fcabdata2.csv
-
-### How to number of trip by medallion ###
-- curl -X GET "http://localhost:8080/cab/countByMedallionAndPickupDate?medallionId=D7D598CD99978BD012A87A76A7C891B7&pickupDate=2013-12-01" -H "accept: */*"
-
-- http://localhost:8080/cab/countByMedallionAndPickupDate?medallionId=D7D598CD99978BD012A87A76A7C891B7&pickupDate=2013-12-01
-
-### How to clear cache###
-curl -X DELETE "http://localhost:8080/cab/resetAllEntries" -H "accept: */*"
-http://localhost:8080/cab/resetAllEntries
-
+### Run Simple Cab Client ###
+3.  Run Simple Cab Client
+        java -jar simplecabclient.jar -h       <== display help
+	
+	usage: Main
+	 -d,--deleteCache           Delete cache.
+	 -f,--inputFileName <arg>   inputFileName with ids.
+	 -h,--help                  show help.
+	 -i,--ignoreCache           Ignore cache.
+	 -m,--medallionIds <arg>    medallion ids.
+	 -p,--pickupDate <arg>      Pickup Date yyyy-MM-dd.
+	 
+ 
 java  -jar simplecabclient.jar -h
 java  -jar simplecabclient.jar -d
-java  -jar simplecabclient.jar -d -i -p 2013-12-01 -f input.txt
 java  -jar simplecabclient.jar -i -p 2013-12-01 -m D7D598CD99978BD012A87A76A7C891B7  5455D5FF2BD94D10B304A15D4B7F2735
-  
-
-### How to run with  cache###
-java  -jar simplecabclient.jar -c 2013-12-01 D7D598CD99978BD012A87A76A7C891B7  5455D5FF2BD94D10B304A15D4B7F2735
-
-pickupDate : 2013-12-01
- ignoreCache : false
- medallionId : 5455D5FF2BD94D10B304A15D4B7F2735 count : 2
- medallionId : D7D598CD99978BD012A87A76A7C891B7 count : 3
-
-### How to run without  cache###
-java  -jar simplecabclient.jar -i 2013-12-01 D7D598CD99978BD012A87A76A7C891B7  5455D5FF2BD94D10B304A15D4B7F2735
-
-pickupDate : 2013-12-01
- ignoreCache : false
- medallionId : 5455D5FF2BD94D10B304A15D4B7F2735 count : 2
- medallionId : D7D598CD99978BD012A87A76A7C891B7 count : 3
+java  -jar simplecabclient.jar -p 2013-12-01 -f input.txt
 
 ### Continous Integration and Code Coverage 
 - [Continous Integration](https://travis-ci.org/mxcheung/microservice?branch=master)
 - [Code Coverage](https://codecov.io/gh/mxcheung/microservice)
 - [Codacy](https://www.codacy.com/app/mxcheung/microservice?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=mxcheung/microservice&amp;utm_campaign=Badge_Grade)
-
-
-    SELECT medallion, count(*) FROM nyc5.cab_trip_data 
-    where medallion in
-        ('D7D598CD99978BD012A87A76A7C891B7', '5455D5FF2BD94D10B304A15D4B7F2735' , '801C69A08B51470871A8110F8B0505EE') 
-        and date(pickup_datetime) = '2013-12-01'
-    group by medallion;
-    
-
-CREATE USER 'golden'@'localhost' IDENTIFIED BY 'password';
-GRANT ALL PRIVILEGES ON * . * TO 'golden'@'localhost';
-FLUSH PRIVILEGES;
-
-mysql -u username -p nyc6 < E:\TEMP2\ny_cab_data_cab_trip_data_full.sql
-
-
-mysql -p nyc6 < E:\TEMP2\ny_cab_data_cab_trip_data_full.sql
-
-
-
--Dspring.profiles.active=local-mysql
 
 ### Relevant Articles: 
 - [How to Quickly Load 380K Items Into MySQL](https://dzone.com/articles/how-to-quickly-load-380k-items-into-mysql)
@@ -89,8 +55,6 @@ mysql -p nyc6 < E:\TEMP2\ny_cab_data_cab_trip_data_full.sql
 - [Simple apache commons CLI](http://www.thinkplexx.com/blog/simple-apache-commons-cli-example-java-command-line-arguments-parsing)
 
 ### What is this repository for? ###
-
-* Service to process query cab trips from csv.
 * 1.0.0
 
 ### How do I get set up? ###
@@ -112,7 +76,6 @@ mysql -p nyc6 < E:\TEMP2\ny_cab_data_cab_trip_data_full.sql
 
 * Repo owner or admin
 * Other community or team contact
-
 
 
 Building The Project

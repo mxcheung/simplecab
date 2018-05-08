@@ -392,7 +392,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>com.datarepublic.simplecab.Client</mainClass>
+							<mainClass>com.data.simplecab.Client</mainClass>
 						</manifest>
 					</archive>
 					<descriptorRefs>

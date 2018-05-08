@@ -285,7 +285,8 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${plugin.springframework.boot}</version>
 				<configuration>
-					<mainClass>com.datarepublic.simplecab.Server</mainClass>
+					<mainClass>com.data.simplecab.Server</mainClass>
+					<finalName>simplecabserver</finalName>
 				</configuration>
 				<executions>
 					<execution>
@@ -298,7 +299,7 @@
 		</plugins>
 
 	</build>
-
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
