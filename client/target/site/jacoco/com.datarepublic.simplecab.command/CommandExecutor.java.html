@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommandExecutor.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">NYC Simple Cab - Client</a> &gt; <a href="index.source.html" class="el_package">com.datarepublic.simplecab.command</a> &gt; <span class="el_source">CommandExecutor.java</span></div><h1>CommandExecutor.java</h1><pre class="source lang-java linenums">package com.datarepublic.simplecab.command;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.Objects;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class CommandExecutor {
+<span class="fc" id="L18">    private static final Logger LOGGER = LoggerFactory.getLogger(CommandExecutor.class);</span>
+
+    private SimpleCabService simpleCabService;
+<span class="fc" id="L21">    private ObjectMapper mapper = getObjectMapper();</span>
+
+<span class="fc" id="L23">    public CommandExecutor(SimpleCabService simpleCabService ) {</span>
+<span class="fc" id="L24">        this.simpleCabService = simpleCabService;</span>
+<span class="fc" id="L25">    }</span>
+
+    public void execute(CommandParams params) throws JsonProcessingException {
+<span class="fc" id="L28">        String paramStr = this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(params);</span>
+<span class="fc" id="L29">        LOGGER.info(&quot;\nInput: {}&quot;, paramStr);</span>
+
+<span class="fc bfc" id="L31" title="All 2 branches covered.">        if (params.getDeleteCache()) {</span>
+<span class="fc" id="L32">            LOGGER.info(&quot;Deleting cache ...&quot;);</span>
+<span class="fc" id="L33">            deleteCache();</span>
+        }
+<span class="fc bfc" id="L35" title="All 2 branches covered.">        if (params.getMedallionIds() != null) {</span>
+<span class="fc" id="L36">            LOGGER.info(&quot;getMedallionSummary ...&quot;);</span>
+<span class="fc" id="L37">            Map&lt;String, Integer&gt; result = getMedallionSummary(params);</span>
+<span class="fc" id="L38">            printResult(params, result);</span>
+        }
+
+<span class="fc" id="L41">    }</span>
+
+    private Map&lt;String, Integer&gt; getMedallionSummary(CommandParams params) throws JsonProcessingException {
+<span class="fc" id="L44">        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="fc" id="L45">        Objects.requireNonNull(params.getPickupDate(), &quot;Pick up date is required&quot;);</span>
+<span class="fc" id="L46">        LocalDate pickupDate = LocalDate.parse(params.getPickupDate(), formatter);</span>
+<span class="fc" id="L47">        return simpleCabService.getMedallionsSummary(java.sql.Date.valueOf(pickupDate), params.getIgnoreCache(),</span>
+<span class="fc" id="L48">                params.getMedallionIds());</span>
+
+    }
+
+    private void printResult(CommandParams params, Map&lt;String, Integer&gt; result) throws JsonProcessingException {
+<span class="fc" id="L53">        StringBuilder sb = new StringBuilder();</span>
+<span class="fc" id="L54">        String paramStr = this.mapper.writerWithDefaultPrettyPrinter().writeValueAsString(params);</span>
+<span class="fc" id="L55">        sb.append(&quot;\nInput: &quot; + paramStr);</span>
+<span class="fc" id="L56">        sb.append(&quot;\nOutput: &quot;);</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        for (String name : result.keySet()) {</span>
+<span class="fc" id="L58">            String key = name.toString();</span>
+<span class="fc" id="L59">            String value = result.get(name).toString();</span>
+<span class="fc" id="L60">            sb.append(&quot;\n medallionId : &quot; + key + &quot; count : &quot; + value);</span>
+<span class="fc" id="L61">        }</span>
+<span class="fc" id="L62">        LOGGER.info(&quot;\n&quot; + sb.toString());</span>
+<span class="fc" id="L63">    }</span>
+
+    private void deleteCache() {
+<span class="fc" id="L66">        LOGGER.info(&quot;delete cache&quot;);</span>
+<span class="fc" id="L67">        simpleCabService.deleteCache();</span>
+<span class="fc" id="L68">    }</span>
+
+    protected ObjectMapper getObjectMapper() {
+<span class="fc" id="L71">        mapper = new ObjectMapper();</span>
+<span class="fc" id="L72">        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);</span>
+<span class="fc" id="L73">        return mapper;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

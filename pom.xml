@@ -1,34 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.datarepublic</groupId>
-    <artifactId>simple-cab</artifactId>
-    <version>1.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <name>NYC Simple Cab - Parent</name>
-    <modules>
-        <module>client</module>
-        <module>server</module>
-    </modules>
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <spring.boot.version>1.5.6.RELEASE</spring.boot.version>
-    </properties>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.datarepublic</groupId>
+	<artifactId>simple-cab</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>NYC Simple Cab - Parent</name>
+	<modules>
+		<module>client</module>
+		<module>server</module>
+	</modules>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<spring.boot.version>1.5.6.RELEASE</spring.boot.version>
+
+		<revision>1.0.0</revision>
+		<changelist>-SNAPSHOT</changelist>
+
+		<!-- Default Profile and Test Execution Properties. Dev profile executing 
+			only unit tests. -->
+		<build.profile.id>dev</build.profile.id>
+		<skip.integration.tests>true</skip.integration.tests>
+		<skip.unit.tests>false</skip.unit.tests>
+
+		<!-- Code coverage properties -->
+		<coverage.line.ratio>0.60</coverage.line.ratio>
+		<coverage.branch.ratio>0.60</coverage.branch.ratio>
+		<coverage.complexity.ratio>0.60</coverage.complexity.ratio>
+
+		<!-- Java Version source/target -->
+		<jdk.source.version>1.8</jdk.source.version>
+		<jdk.target.version>1.8</jdk.target.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Maven plugin versions -->
+		<plugin.maven.compiler>3.7.0</plugin.maven.compiler>
+		<plugin.maven.resources>3.0.2</plugin.maven.resources>
+		<plugin.maven.surefire>2.21.0</plugin.maven.surefire>
+		<plugin.maven.failsafe>2.21.0</plugin.maven.failsafe>
+		<plugin.maven.jar>3.0.2</plugin.maven.jar>
+		<plugin.maven.war>3.2.0</plugin.maven.war>
+		<plugin.springframework.boot>1.5.10.RELEASE</plugin.springframework.boot>
+		<plugin.build.helper>3.0.0</plugin.build.helper>
+		<plugin.jacoco>0.8.0</plugin.jacoco>
+		<plugin.maven.checkstyle>3.0.0</plugin.maven.checkstyle>
+		<plugin.puppycrawl.checkstyle>8.8</plugin.puppycrawl.checkstyle>
+		<!-- Jacoco Properties -->
+		<jacoco.execution.data.file>${project.build.directory}/jacoco.exec</jacoco.execution.data.file>
+
+		<!-- Dependency Library Versions -->
+		<lonsec-starters-version>1.0.0</lonsec-starters-version>
+
+		<apache.commons.lang3.version>3.7</apache.commons.lang3.version>
+		<commons-collections4.version>4.1</commons-collections4.version>
+		<!-- Test Dependency Library Versions -->
+		<junit-version>4.12</junit-version>
+
+		<mssql.jdbc.version>6.2.1.jre8</mssql.jdbc.version>
+		<jackson-dataformat-csv.version>2.8.8</jackson-dataformat-csv.version>
+		<dozer.version>5.5.1</dozer.version>
+		<swagger2.version>2.8.0</swagger2.version>
+	</properties>
+
+	<!-- Inherit defaults from spring boot. -->
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.10.RELEASE</version>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 
 
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+	<profiles>
+		<profile>
+			<id>no-tests</id>
+			<properties>
+				<!-- NO tests are run. -->
+				<skip.integration.tests>true</skip.integration.tests>
+				<skip.unit.tests>true</skip.unit.tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>all-tests</id>
+			<properties>
+				<!-- All tests are run. -->
+				<skip.integration.tests>false</skip.integration.tests>
+				<skip.unit.tests>false</skip.unit.tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>unit-tests</id>
+			<properties>
+				<!-- Only integration tests are run. -->
+				<skip.integration.tests>true</skip.integration.tests>
+				<skip.unit.tests>false</skip.unit.tests>
+			</properties>
+		</profile>
+		<profile>
+			<id>integration-tests</id>
+			<properties>
+				<!-- Only integration tests are run. -->
+				<skip.integration.tests>false</skip.integration.tests>
+				<skip.unit.tests>true</skip.unit.tests>
+			</properties>
+		</profile>
+	</profiles>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+
+	</dependencies>
+
 
 </project>

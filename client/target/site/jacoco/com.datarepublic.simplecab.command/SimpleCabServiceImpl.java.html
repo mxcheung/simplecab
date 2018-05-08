@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimpleCabServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">NYC Simple Cab - Client</a> &gt; <a href="index.source.html" class="el_package">com.datarepublic.simplecab.command</a> &gt; <span class="el_source">SimpleCabServiceImpl.java</span></div><h1>SimpleCabServiceImpl.java</h1><pre class="source lang-java linenums">package com.datarepublic.simplecab.command;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+public class SimpleCabServiceImpl implements SimpleCabService {
+
+    private static final String YYYY_MM_DD = &quot;yyyy-MM-dd&quot;;
+<span class="fc" id="L23">    private static final DateFormat format = new SimpleDateFormat(YYYY_MM_DD);</span>
+
+<span class="fc" id="L25">    private static final Logger LOGGER = LoggerFactory.getLogger(SimpleCabServiceImpl.class);</span>
+
+    public static final String MIGRATE_BASE_CONTEXT_LOCAL = &quot;http://localhost:8080/cab&quot;;
+    public static final String DELETE_CACHE_MAPPING = &quot;/clearCache&quot;;
+    private static final String COUNT_BY_MEDALLIONS_AND_PICKUP_DATE_MAPPING = &quot;/countByMedallionsAndPickupDate&quot;;
+    private RestTemplate restTemplate;
+    
+    
+    
+
+<span class="fc" id="L35">    public SimpleCabServiceImpl(RestTemplate restTemplate) {</span>
+<span class="fc" id="L36">        this.restTemplate = restTemplate;</span>
+<span class="fc" id="L37">    }</span>
+
+    @Override
+    public void deleteCache() {
+<span class="fc" id="L41">        LOGGER.info(&quot;deleteCache start....&quot;);</span>
+<span class="fc" id="L42">         String url = MIGRATE_BASE_CONTEXT_LOCAL + DELETE_CACHE_MAPPING;</span>
+<span class="fc" id="L43">        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(url);</span>
+<span class="fc" id="L44">        HttpEntity&lt;?&gt; entity = new HttpEntity&lt;&gt;(getHeader());</span>
+
+<span class="fc" id="L46">        ResponseEntity&lt;String&gt; response = restTemplate.exchange(builder.toUriString(), HttpMethod.POST, entity,</span>
+                String.class);
+
+<span class="fc" id="L49">        LOGGER.info(&quot;deleteCache Status {}&quot;, response.getStatusCode());</span>
+
+<span class="fc" id="L51">    }</span>
+
+    @Override
+    public Map&lt;String, Integer&gt; getMedallionsSummary(Date pickupDate, String... medallions) {
+<span class="fc" id="L55">        return getMedallionsSummary(pickupDate, false, medallions);</span>
+    }
+
+    @Override
+    public Map&lt;String, Integer&gt; getMedallionsSummary(Date pickupDate, boolean ignoreCache, String... medallions) {
+<span class="fc" id="L60">        LOGGER.info(&quot;getMedallionsSummary pickupDate : {} , ignoreCache : {}, medallions : {} ....&quot;, pickupDate,</span>
+<span class="fc" id="L61">                ignoreCache, medallions);</span>
+<span class="fc" id="L62">        UriComponentsBuilder builder = UriComponentsBuilder</span>
+<span class="fc" id="L63">                .fromHttpUrl(MIGRATE_BASE_CONTEXT_LOCAL + COUNT_BY_MEDALLIONS_AND_PICKUP_DATE_MAPPING)</span>
+<span class="fc" id="L64">                .queryParam(&quot;pickupDate&quot;, format.format(pickupDate));</span>
+
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        for (String medallionId : medallions) {</span>
+<span class="fc" id="L67">            builder.queryParam(&quot;medallionIds&quot;, medallionId);</span>
+        }
+<span class="fc" id="L69">        HttpEntity&lt;?&gt; entity = new HttpEntity&lt;&gt;(getHeader());</span>
+<span class="fc" id="L70">        ParameterizedTypeReference&lt;Map&lt;String, Integer&gt;&gt; typeRef = new ParameterizedTypeReference&lt;Map&lt;String, Integer&gt;&gt;() {</span>
+        };
+<span class="fc" id="L72">        ResponseEntity&lt;Map&lt;String, Integer&gt;&gt; response = restTemplate.exchange(builder.toUriString(), HttpMethod.GET,</span>
+                entity, typeRef);
+<span class="fc" id="L74">        LOGGER.info(&quot;getMedallionsSummary Status {}&quot;, response.getStatusCode());</span>
+<span class="fc" id="L75">        LOGGER.info(&quot;getMedallionsSummary Body {}&quot;, response.getBody());</span>
+<span class="fc" id="L76">        return response.getBody();</span>
+    }
+
+    private HttpHeaders getHeader() {
+<span class="fc" id="L80">        HttpHeaders headers = new HttpHeaders();</span>
+<span class="fc" id="L81">        headers.setContentType(APPLICATION_JSON);</span>
+<span class="fc" id="L82">        return headers;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Cli.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">NYC Simple Cab - Client</a> &gt; <a href="index.source.html" class="el_package">com.datarepublic.simplecab.cli</a> &gt; <span class="el_source">Cli.java</span></div><h1>Cli.java</h1><pre class="source lang-java linenums">package com.datarepublic.simplecab.cli;
+
+import java.io.File;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.stream.Stream;
+
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Option;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.datarepublic.simplecab.command.CommandParams;
+
+public class Cli {
+<span class="fc" id="L24">    private static final Logger LOGGER = LoggerFactory.getLogger(Cli.class);</span>
+<span class="fc" id="L25">    private String[] args = null;</span>
+<span class="fc" id="L26">    private Options options = getOptions();</span>
+
+
+<span class="fc" id="L29">    public Cli(String[] args) {</span>
+<span class="fc" id="L30">        this.args = args;</span>
+<span class="fc" id="L31">    }</span>
+
+    public CommandParams parse() throws URISyntaxException, IOException {
+
+<span class="fc" id="L35">        CommandLineParser parser = new DefaultParser();</span>
+<span class="fc" id="L36">        CommandParams params = new CommandParams();</span>
+<span class="fc" id="L37">        CommandLine cmd = null;</span>
+        try {
+<span class="fc" id="L39">            cmd = parser.parse(options, args);</span>
+<span class="fc bfc" id="L40" title="All 2 branches covered.">            if (cmd.hasOption(&quot;h&quot;))</span>
+<span class="fc" id="L41">                help();</span>
+            else {
+<span class="fc bfc" id="L43" title="All 2 branches covered.">                if (cmd.hasOption(&quot;d&quot;)) {</span>
+<span class="fc" id="L44">                    params.setDeleteCache(true);</span>
+                }
+                
+<span class="fc bfc" id="L47" title="All 2 branches covered.">                if (cmd.hasOption(&quot;i&quot;)) {</span>
+<span class="fc" id="L48">                    params.setIgnoreCache(true);</span>
+                }
+                
+<span class="fc bfc" id="L51" title="All 2 branches covered.">                if (cmd.hasOption(&quot;p&quot;)) {</span>
+<span class="fc" id="L52">                    params.setPickupDate(cmd.getOptionValue(&quot;p&quot;));</span>
+                }
+                
+<span class="fc bfc" id="L55" title="All 2 branches covered.">                if (cmd.hasOption(&quot;f&quot;)) {</span>
+<span class="fc" id="L56">                    params.setInputFileName(cmd.getOptionValue(&quot;f&quot;));</span>
+<span class="nc" id="L57">                    String[] medallionIds = readFile(params.getInputFileName());</span>
+<span class="nc" id="L58">                    LOGGER.info(&quot;\nLoad from file medallionIds count: {}&quot;, medallionIds.length);</span>
+<span class="nc" id="L59">                    params.setMedallionIds(medallionIds);</span>
+                }
+                
+<span class="fc bfc" id="L62" title="All 2 branches covered.">                if (cmd.hasOption(&quot;m&quot;)) {</span>
+<span class="fc" id="L63">                    params.setMedallionIds(cmd.getOptionValues(&quot;m&quot;));</span>
+                }
+            }
+
+
+
+<span class="nc" id="L69">        } catch (ParseException e) {</span>
+<span class="nc" id="L70">            LOGGER.error(&quot;Failed to parse comand line properties&quot;, e);</span>
+<span class="nc" id="L71">            help();</span>
+<span class="fc" id="L72">        }</span>
+<span class="fc" id="L73">        return params;</span>
+    }
+
+    private String[] readFile(String filepath) throws URISyntaxException, IOException {
+<span class="fc" id="L77">        File file = new File(filepath);</span>
+<span class="fc" id="L78">        Path path = Paths.get(file.toURI());</span>
+<span class="nc" id="L79">        Stream&lt;String&gt; lines = Files.lines(path);</span>
+<span class="nc" id="L80">        String[] input = lines.toArray(size -&gt; new String[size]);</span>
+<span class="nc" id="L81">        lines.close();</span>
+<span class="nc" id="L82">        return input;</span>
+    }
+
+    public void help() {
+        // This prints out some help
+<span class="fc" id="L87">        HelpFormatter formater = new HelpFormatter();</span>
+<span class="fc" id="L88">        formater.printHelp(&quot;Main&quot;, options);</span>
+    //    System.exit(0);
+<span class="fc" id="L90">    }</span>
+
+    private Options getOptions() {
+<span class="fc" id="L93">        Options options = new Options();</span>
+<span class="fc" id="L94">        options.addOption(&quot;h&quot;, &quot;help&quot;, false, &quot;show help.&quot;);</span>
+<span class="fc" id="L95">        options.addOption(&quot;d&quot;, &quot;deleteCache&quot;, false, &quot;Delete cache.&quot;);</span>
+<span class="fc" id="L96">        options.addOption(&quot;i&quot;, &quot;ignoreCache&quot;, false, &quot;Ignore cache.&quot;);</span>
+<span class="fc" id="L97">        options.addOption(&quot;m&quot;, &quot;medallionIds&quot;, true, &quot;medallion ids.&quot;);</span>
+<span class="fc" id="L98">        options.addOption(&quot;p&quot;, &quot;pickupDate&quot;, true, &quot;Pickup Date yyyy-MM-dd.&quot;);</span>
+<span class="fc" id="L99">        options.addOption(&quot;f&quot;, &quot;inputFileName&quot;, true, &quot;inputFileName with ids.&quot;);</span>
+<span class="fc" id="L100">        options.getOption(&quot;m&quot;).setArgs(Option.UNLIMITED_VALUES);</span>
+<span class="fc" id="L101">        return options;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
